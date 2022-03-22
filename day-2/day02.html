@@ -1,0 +1,29 @@
+<script>
+
+alert('Mari Berhitung!');
+
+let konfirmasi = true;
+
+    while (konfirmasi === true) {
+        
+        let angkaSatu = Number(prompt("Masukkan angka pertama :"));
+        let angkaDua = Number(prompt("Masukkan angka kedua :"));
+        
+        if(isNaN(angkaSatu) || isNaN(angkaDua)) {
+            alert(`Anda tidak memasukkan angka, mohon ulangi kembali`);
+        } else {
+            // angkaSatu = parseInt(angkaSatu);
+            // angkaDua = parseInt(angkaDua);
+            alert(`Hasil Perhitungan :
+            1. Penjumlahan ${angkaSatu} dan ${angkaDua} adalah ${angkaSatu + angkaDua}
+            2. Pengurangan ${angkaSatu} dan ${angkaDua} adalah ${angkaSatu - angkaDua}
+            3. Perkalian ${angkaSatu} dan ${angkaDua} adalah ${angkaSatu * angkaDua}
+            4. Pembagian ${angkaSatu} dan ${angkaDua} adalah ${angkaSatu / angkaDua}`);
+        }
+    
+        konfirmasi = confirm("Mau berhitung lagi?")
+    }
+
+alert(`Terima kasih sudah berhitung!`)
+
+</script>

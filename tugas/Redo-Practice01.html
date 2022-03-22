@@ -1,0 +1,73 @@
+<script>
+
+    let database = [
+        {
+            name: "Anindya",
+            age: 27,
+            color: "Green"
+        },
+        {
+            name: "Hana",
+            age: 27,
+            color: "Caramel"
+        }
+    ]
+
+    let confirmation = true;
+
+    const seeDatabase = () => {
+        return database.map((value, index) => {
+            return `${index + 1}. ${value.name}, a ${value.age}-year old who loves the color ${value.color.toLowerCase()}`
+        }).join("\n");
+    }
+
+    while (confirmation === true) {
+
+        let option = parseInt(prompt(`Choose the option you want to do: 
+        1. See Database
+        2. Add Database
+        3. Delete Database
+        4. Edit Database`));
+
+        if (option === 1) {
+            alert(`Here are the student details: \n${seeDatabase()}`);
+
+        } else if (option === 2) {
+            let addName = prompt(`Add the student name: `);
+            let addAge = prompt(`Add the student age: `);
+            let addColor = prompt(`Add the student's favorite color: `);
+
+            database.push({
+                name: addName,
+                age: addAge,
+                color: addColor});
+            alert(`You've added ${addName}, age ${addAge}, whose favorite color is ${addColor.toLowerCase()}`);
+
+        } else if (option === 3) {
+            let deleteData = parseInt(prompt(`Choose the student number you wish to delete from this list: \n${seeDatabase()}`));
+
+            database.splice(deleteData - 1, 1);
+            
+        } else if (option === 4) {
+            let editNumber = parseInt(prompt(`Choose the student number you wish to edit from this list: \n${seeDatabase()}`));
+            let editName = prompt(`Add the new student name`);
+            let editAge = parseInt(prompt(`Add the new student's age`));
+            let editColor = prompt(`Add the new student's favorite color`);
+            
+
+            database.splice(editNumber - 1, 1, {
+                name: editName,
+                age: editAge,
+                color: editColor
+            });
+
+        } else {
+            alert(`The option you chose is not available`)
+        }
+
+        confirmation = confirm(`Go back to homepage?`);
+    }
+
+alert (`Thanks for playing!`)
+
+</script>

@@ -1,0 +1,116 @@
+<script>
+
+    let produk = [];
+
+
+    class Product {
+        constructor(_name, _stock, _price) {
+            this.name = _name;
+            this.stock = _stock;
+            this.price = _price;
+        }
+
+        introduce = () => {
+            return `${this.name}, stock: ${this.stock}, IDR ${this.price}`;
+        }
+    }
+
+    class Fnb extends Product {
+        constructor(_name, _stock, _price, _type, _expDate) {
+            super(_name, _stock, _price)
+            this.type = _type;
+            this.expDate = _expDate;
+        }
+
+        introduce = () => {
+            return `${this.name}, stock: ${this.stock}, IDR ${this.price}, exp. ${this.expDate}`;
+        }
+    }
+
+    let printData = () => {
+        return produk.map((value, index) => {
+            return `${index + 1}. ${produk[index].introduce()}`
+        }).join("\n");
+    }
+
+    let konfirmasi = true;
+
+    while (konfirmasi) {
+
+        let homepage = Number(prompt(`Selamat datang di toko kami!
+        1. Tambah Produk
+        2. Beli Produk
+        3. Cek Stock`));
+
+        if (homepage == 1) {
+
+            let jenisBarang = prompt(`Produk apa yang ingin anda tambahkan? :
+            1. FnB
+            2. Non-FnB`);
+            let tambahBarang = prompt(`Masukkan barang yang ingin ditambah :`);
+            let tambahStock = Number(prompt(`Masukkan stock dari ${tambahBarang.toLowerCase()} :`));
+            let tambahPrice = Number(prompt(`Masukkan harga dari ${tambahBarang.toLowerCase()} :`));
+
+            if (jenisBarang == 1) {
+                let tambahType = prompt(`Masukkan tipe dari ${tambahBarang.toLowerCase()} :`);
+                let tambahExpDate = prompt(`Masukkan expiry date dari ${tambahBarang.toLowerCase()} :`);
+
+                produk.push(new Fnb(tambahBarang, tambahStock, tambahPrice, tambahType, tambahExpDate));
+
+            } else if (jenisBarang == 2) {
+                produk.push(new Product(tambahBarang, tambahStock, tambahPrice));
+
+            } else {
+                alert(`Pilihan yang anda masukkan salah`)
+            }
+
+            alert(`Produk sudah terdaftar`)
+
+
+        } else if (homepage == 2) {
+
+            let ulang = true;
+
+            while (ulang == true) {
+
+                let pilihBarang = Number(prompt(`Silahkan pilih barang :\n ${printData()}`))
+                let pilihJumlah = Number(prompt(`Beli ${database[pilihBarang - 1].name.toLowerCase()} berapa pcs :`))
+
+                if (pilihJumlah < database[pilihBarang - 1].stock) {
+                    let hargaBarang = pilihJumlah * database[pilihBarang - 1].price
+
+                    let totalUang = Number(prompt(`Total harga : ${hargaBarang}
+                    Masukkan uang anda: `));
+
+                    if (totalUang > hargaBarang) {
+
+                        let kembalian = totalUang - hargaBarang;
+                        alert(`Kembalian anda Rp. ${kembalian}`);
+
+                        database[pilihBarang - 1].stock = database[pilihBarang - 1].stock - pilihJumlah;
+
+                        ulang = false;
+
+                    } else {
+                        alert(`Jumlah uang yang anda masukkan kurang`)
+                    }
+                } else {
+                    ulang = confirm(`Jumlah yang anda pilih melebihi stock. Apakah mau input stock lagi?`);
+                }
+
+            }
+
+        } else if (homepage == 3) {
+            alert(`Berikut produk yang terdaftar: \n${printData()}`)
+
+        } else {
+            alert(`Opsi yang kamu pilih tidak tersedia`)
+        }
+
+        konfirmasi = confirm(`Kembali ke menu utama?`);
+    }
+
+    alert(`Terima kasih sudah belanja di toko kami!`);
+
+
+</script>

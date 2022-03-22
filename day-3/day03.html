@@ -1,0 +1,46 @@
+<script>
+
+    let konfirmasi = true;
+    let data = ["mobil", "motor"];
+    
+    const printData = () => {
+        return data.map((value, index) =>{
+            return `${index + 1}. ${value}`
+        }).join("\n");
+    }
+
+    while (konfirmasi === true) {
+
+        let input = Number(prompt(`Silahkan atur data barang :
+        1. Tambah Data
+        2. Hapus Data
+        3. Lihat Data
+        4. Edit Data`));
+
+
+        if (input === 1) {
+            let tambahData = prompt(`Silahkan masukkan kata yang ingin ditambahkan :`);
+            data.push(tambahData);
+
+        } else if (input === 2) {
+            let hapusData = Number(prompt(`Silahkan masukkan nomor dari kata yang ingin dihapus : \n ${printData()} \n`));;
+            data.splice(hapusData - 1, 1);
+
+        } else if (input === 3) {
+            alert(`Berikut data yang ada : \n ${printData()}`);
+
+        } else if (input === 4) {
+            let editData = Number(prompt(`Silahkan masukkan nomor dari kata yang ingin diganti : \n ${printData()} \n`));;
+            let dataBaru = prompt(`Silahkan masukkan kata baru untuk menggantikan ${data[editData - 1]} :`);;
+
+            data.splice(editData - 1, 1, dataBaru);
+
+        } else {
+            alert(`Pilihan yang anda masukkan tidak tersedia`);
+        }
+
+        konfirmasi = confirm(`Kembali ke halaman awal`);
+    }
+
+    alert(`Terima kasih sudah bermain!`)
+</script>

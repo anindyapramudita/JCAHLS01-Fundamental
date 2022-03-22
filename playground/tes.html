@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack List</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 1vw
+        }
+    </style>
+</head>
+
+<body>
+    <h1>DATABASE CENTER</h1>
+    <div id="addData">
+        <fieldset style="width: 300px;">
+            <legend>Add More Data</legend>
+            <form id="dataForm">
+                <label>Product Name: </label>
+                <input id="productName" type="text">
+                <br>
+                <label>Product Stock: </label>
+                <input id="productStock" type="number">
+                <br>
+                <label>Product Price: </label>
+                <input id="productPrice" type="number">
+                <br>
+                <label>Product type: </label>
+                <select id="productType">
+                    <option value="fnb">Food & Beverage</option>
+                    <option value="others">Others</option>
+                </select>
+                <br>
+                <button type="button" onClick="getData()">Add Data</button>
+            </form>
+
+        </fieldset>
+    </div>
+
+    <div id="fnbDatabase">
+        <fieldset style="width: 300px">
+            <legend>Food & Beverage</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Stock</th>
+                        <th>Price</th>
+                        <th>Delete</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody id="fnbData">
+
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+
+    <div id="othersDatabase">
+        <fieldset style="width: 300px">
+            <legend>Others</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Stock</th>
+                        <th>Price</th>
+                        <th>Delete</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody id="othersData">
+
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+    <div id="editFnb">
+        <fieldset style="width: 300px">
+            <legend>Edit Data</legend>
+            <form id="editDataFnb">
+
+            </form>
+        </fieldset>
+    </div>
+</body>
+<script>
+
+    let dbProductFnb = [];
+    let dbProductOthers = [];
+    const productTypeFnb = "fnb";
+    const productTypeOthers = "others";
+
+    class Product {
+        constructor(_name, _stock, _price, _type) {
+            this.name = _name;
+            this.stock = _stock;
+            this.price = _price;
+            this.type = _type;
+        }
+    }
+
+    const getData = () => {
+        let form = document.getElementById("dataForm");
+        let productName = form.elements[0].value;
+        let productStock = form.elements[1].value;
+        let productPrice = form.elements[2].value;
+        let productType = form.elements[3].value;
+
+        if (productType == "fnb") {
+            dbProductFnb.push(new Product(productName, productStock, productPrice, productType));
+        } else if (productType == "others") {
+            dbProductOthers.push(new Product(productName, productStock, productPrice, productType));
+        }
+        
+        form.elements[0].value = null;
+        form.elements[1].value = null;
+        form.elements[2].value = null;
+        // form.elements[3].value = "fnb";
+        printData();
+
+
+    }
+
+    const printData = () => {
+        let form = document.getElementById("dataForm");
+        let productType = form.elements[3].value
+
+        if (productType == "fnb") {
+            let loopDatabase = dbProductFnb.map((value, index) => {
+                return `<tr>
+                        <td>${index + 1}</td>
+                        <td>${dbProductFnb[index].name}</td>
+                        <td>${dbProductFnb[index].stock}</td>
+                        <td>${dbProductFnb[index].price}</td>
+                        <td><button type = "button" onClick = "deleteData(productTypeFnb, ${index})">Delete</button></td>
+                        <td><button type = "button" onClick = "showEdit(1, ${index})">Edit</button></td>
+                        </tr>`
+            }
+            )
+            document.getElementById("fnbData").innerHTML = loopDatabase.join("");
+
+        } else if (productType == "others") {
+            let loopDatabase = dbProductOthers.map((value, index) => {
+                return `<tr>
+                    <td>${index + 1}</td>
+                    <td>${dbProductOthers[index].name}</td>
+                    <td>${dbProductOthers[index].stock}</td>
+                    <td>${dbProductOthers[index].price}</td>
+                    <td><button type = "button" onClick = "deleteData(productTypeOthers, ${index})">Delete</button></td>
+                    <td><button type = "button" onClick = "showEdit(2, ${index})">Edit</button></td>
+                    </tr>`
+            }
+            )
+            document.getElementById("othersData").innerHTML = loopDatabase.join("");
+        }
+
+    }
+
+    const showEdit = (number, index) => {
+        let getProductName = "";
+        if (number == 1) {
+            getProductName = `<label>Product Name:</label>
+                <label>${dbProductFnb[index].name}</label>
+                <br>
+                <label>Product Type: </label>
+                <label id="productTypeEdit">Food & Beverage</label>
+                <br>
+                <label>Product Stock:</label>
+                <input id="stockEdit" type="number">
+                <br>
+                <label>Product Price:</label>
+                <input id= "priceEdit" type="number">
+                <button type="button" onClick="getEdit(1, ${index})">Edit Data</button>`
+            } else if (number == 2) {
+            getProductName = `<label>Product Name:</label>
+                <label>${dbProductOthers[index].name}</label>
+                <br>
+                <label>Product Type: </label>
+                <label id="productTypeEdit">Others</label>
+                <br>
+                <label>Product Stock:</label>
+                <input id="stockEdit" type="number">
+                <br>
+                <label>Product Price:</label>
+                <input id= "priceEdit" type="number">
+                <button type="button" onClick="getEdit(2, ${index})">Edit Data</button>`
+        }
+
+        document.getElementById("editDataFnb").innerHTML = getProductName;
+    }
+
+    const getEdit = (number, index) => {
+        let productType = document.getElementById("productTypeEdit")
+        let stockEdit = document.getElementById("stockEdit")
+        let priceEdit = document.getElementById("priceEdit")
+        
+        if (number == 1) {
+            dbProductFnb[index].stock = stockEdit.value
+            dbProductFnb[index].price = priceEdit.value
+        } else if (number == 2) {
+            dbProductOthers[index].stock = stockEdit.value
+            dbProductOthers[index].price = priceEdit.value
+        }
+        
+        printData();
+    }
+
+    const deleteData = (productType, index) => {
+        if (productType == "fnb") {
+            dbProductFnb.splice(index, 1);
+        } else if (productType == "others") {
+            dbProductOthers.splice(index, 1);
+        }
+        printData();
+    }
+
+</script>
+
+</html>

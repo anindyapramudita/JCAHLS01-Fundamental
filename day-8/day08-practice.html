@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator</title>
+</head>
+<body>
+    <h1>Mari Berhitung</h1>
+    <form>
+        <input id="angkaSatu" type="number" value="0">
+        <input id="angkaDua" type="number" value="0">
+        <button type="button" onclick="perhitungan()">Hitung</button>
+    </form>
+    <h3>Hasil perhitungan adalah :</h3>
+    <h4 id="hasilJumlah"></h4>    
+    <h4 id="hasilKurang"></h4>    
+    <h4 id="hasilBagi"></h4>    
+    <h4 id="hasilKali"></h4>       
+</body>
+<script>
+
+    function perhitungan(){
+        let angkaSatu = document.getElementById("angkaSatu");
+        let angkaDua = document.getElementById("angkaDua");
+        
+        document.getElementById("hasilJumlah").innerHTML= `${angkaSatu.value} + ${angkaDua.value} = ${parseInt(angkaSatu.value) + parseInt(angkaDua.value)}`
+        document.getElementById("hasilKurang").innerHTML= `${angkaSatu.value} - ${angkaDua.value} = ${parseInt(angkaSatu.value) - parseInt(angkaDua.value)}`
+        document.getElementById("hasilBagi").innerHTML= `${angkaSatu.value} / ${angkaDua.value} = ${parseInt(angkaSatu.value) / parseInt(angkaDua.value)}`
+        document.getElementById("hasilKali").innerHTML= `${angkaSatu.value} * ${angkaDua.value} = ${parseInt(angkaSatu.value) * parseInt(angkaDua.value)}`
+        
+        return console.log(hasilJumlah, hasilKurang, hasilBagi, hasilKali); 
+    }
+
+</script>
+</html>

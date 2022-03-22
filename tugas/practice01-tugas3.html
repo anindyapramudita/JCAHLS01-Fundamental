@@ -1,0 +1,35 @@
+<script>
+
+    alert('Mengubah menjadi Title Case!');
+
+    // let input = prompt("Masukkan kalimat anda:");
+
+    // function toTitleCase(input) {
+    //     input = input.toLowerCase().split(' ');
+    //     for (let i = 0; i < input.length; i++) {
+    //         input[i] = input[i].charAt(0).toUpperCase() + input[i].slice(1);
+    //     }
+    //     return input.join(' ');
+    // }
+
+    // alert(toTitleCase(input));
+
+
+    // CARA LAIN :
+
+    let text = prompt("Masukkan kalimat kamu: ")
+    let titleCase = "";
+
+    for (let i = 0; i < text.length; i++) {
+        if (i == 0) {
+            titleCase += text.charAt(i).toUpperCase();
+        } else if (text.charAt(i - 1) == ' ') {
+            titleCase += text.charAt(i).toUpperCase();
+        } else {
+            titleCase += text.charAt(i).toLowerCase();
+        }
+    }
+
+    alert(titleCase);
+
+</script>

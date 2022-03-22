@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw Your Shape</title>
+</head>
+
+<body>
+    <h1>Drawing Your Shape</h1>
+    <select id="shape">
+        <option value="persegi">Persegi</option>
+        <option value="segitiga">Segitiga</option>
+    </select>
+    <p>Size of shape :</p>
+    <input id="size" type="number">
+    <button type="button" onclick="getShape()">Generate</button>
+    <p id="pattern"></p>
+</body>
+
+
+<script>
+
+const getShape = () => {
+    let shape = document.getElementById("shape").value;
+    let size = parseInt(document.getElementById("size").value);
+    let pattern = "";
+
+    if (shape == "segitiga") {
+        for (let i = 0; i < size; i++) {
+            for (let j = 0; j < size; j++) {
+                if (j <= i) {
+                    if (i % 2 !== 0) {
+                        pattern += "# "
+                    } else {
+                        if (j % 2 == 0) {
+                            pattern += "* "
+                        } else {
+                            pattern += "# "
+
+                        }
+                    }
+                }
+            }
+            pattern += `<br>`
+        }
+    } else if (shape == "persegi") {
+        for (let i = 0; i < size; i++) {
+            for (let j = 0; j < size; j++) {
+                if (i % 2 !== 0) {
+                    pattern += "# "
+                } else {
+                    if (j % 2 == 0) {
+                        pattern += "* "
+                    } else {
+                        pattern += "# "
+
+                    }
+                }
+            }
+            pattern += `<br>`
+        }
+    }
+
+document.getElementById("pattern").innerHTML = pattern;
+}
+
+
+</script>
+
+</html>

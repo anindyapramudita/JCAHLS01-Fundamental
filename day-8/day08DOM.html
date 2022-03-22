@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro DOM</title>
+</head>
+<body>
+    <h2 id="title"></h2>
+    <form>
+        <input id="inName" type="text" value="Aldo">
+        <button type="button" onclick="getValue()">Get Value</button>
+    </form>
+</body>
+<script>
+    console.log(document.getElementById("title"))
+    document.getElementById("title").innerHTML="Hello Bos"
+    // let title = document.getElementById("title");
+    // title.innerHTML="Hello Boskuh"
+   
+    function getValue(){
+        let inName = document.getElementById("inName");
+        console.log(inName.value); 
+    }
+</script>
+</html>

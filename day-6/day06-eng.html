@@ -1,0 +1,89 @@
+<script>
+
+    let database = [
+        {
+            name: "Shirt",
+            stock: 20,
+            price: 50000
+        },
+        {
+            name: "Pants",
+            stock: 15,
+            price: 75000
+        },
+        {
+            name: "Shoes",
+            stock: 10,
+            price: 90000
+        }
+    ]
+
+    let printData = () => {
+        return database.map((value, index) => {
+            return `${index + 1}. ${value.name}, stock = ${value.stock}, price = IDR ${value.price}`
+        }).join("\n");
+    }
+
+    let confirmation = true;
+
+    while (confirmation === true) {
+
+        let homepage = Number(prompt(`Welcome to our store!
+        1. Add Product
+        2. Buy Product
+        3. See Stock`));
+
+        if (homepage == 1) {
+
+            let addProduct = prompt(`Write the product you want to add :`);
+            let addStock = Number(prompt(`Write the stock of ${addProduct.toLowerCase()} :`));
+            let addPrice = Number(prompt(`Write the price of ${addProduct.toLowerCase()} :`));
+
+            database.push({ name: addProduct, stock: addStock, price: addPrice });
+
+        } else if (homepage == 2) {
+
+            let loop = true;
+
+            while (loop == true) {
+
+                let chooseProduct = Number(prompt(`Please choose the product :\n ${printData()}`))
+                let chooseQty = Number(prompt(`How many ${database[chooseProduct - 1].name.toLowerCase()} would you like :`))
+
+                if (chooseQty < database[chooseProduct - 1].stock) {
+                    let productPrice = chooseQty * database[chooseProduct - 1].price
+
+                    let totalMoney = Number(prompt(`Total price : ${productPrice}
+                    Please submit your money: `));
+
+                    if (totalMoney > productPrice) {
+
+                        let change = totalMoney - productPrice;
+                        alert(`Your change will be IDR ${change}`);
+
+                        database[chooseProduct - 1].stock = database[chooseProduct - 1].stock - chooseQty;
+
+                        loop = false;
+
+                    } else {
+                        alert(`The amount of money you've submitted is not enough`)
+                    }
+                } else {
+                    loop = confirm(`The quantity you want choose is more than the available stock. Would you like to buy again?`);
+                }
+
+            }
+
+        } else if (homepage == 3) {
+            alert(`Here are the available stock: \n ${printData()}`)
+
+        } else {
+            alert(`The option you chose is not available`)
+        }
+
+        confirmation = confirm(`Back to homepage?`);
+    }
+
+    alert(`Thank you for shopping with us!`);
+
+</script>

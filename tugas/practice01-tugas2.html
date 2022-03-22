@@ -1,0 +1,56 @@
+<script>
+
+    alert('Periksa kata Palindrome!');
+    
+    let konfirmasi = true;
+    
+    while (konfirmasi === true) {
+
+        let kata = prompt("Masukkan sebuah kata :");
+        kata = kata.toLowerCase();
+        
+        let hasil = [];
+    
+         for (let i = 0; i < kata.length / 2; i++) {
+            if (kata[i] === kata[kata.length - 1 - i]) {
+                hasil.push("true");
+            } else {
+                hasil.push("false");
+            }
+        }
+    
+        if (hasil.includes("false")) {
+            alert (`${kata} bukan palindrome ❌`);
+        } else {
+            alert (`${kata} adalah palindrome ✅`);
+        }
+        
+        konfirmasi = confirm("Coba lagi?");
+    }
+
+
+    // CARA LAIN 1:
+
+    // let polin = prompt("Masukkan kata polindrom");
+    // if (polin.split('').reverse().join('').toLowerCase() == polin.toLowerCase()) {
+    //     alert(`Kata ${polin} ini ✅ polindrom ${polin.split('').reverse().join('')}`);
+    // } else {
+    //     alert(`Kata ${polin} ini bukan ❌ polindrom ${polin.split('').reverse().join('')}`);
+    // }
+
+    
+    // CARA LAIN 2:
+    
+    // let polin_reverse = '';
+    // for (let i = polin.length - 1; i >= 0; i--) {
+    //     console.log(`Alamat index string huruf : ${i}`, polin.charAt(i));
+    //     polin_reverse += polin.charAt(i);
+    // }
+    // if (polin_reverse.toLowerCase() == polin.toLowerCase()) {
+    //     alert(`Kata ${polin} ini ✅ polindrom ${polin_reverse}`);
+    // } else {
+    //     alert(`Kata ${polin} ini bukan ❌ polindrom ${polin_reverse}`);
+    // }
+
+
+</script>

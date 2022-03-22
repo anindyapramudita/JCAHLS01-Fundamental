@@ -1,0 +1,51 @@
+<script>
+
+    alert('Apakah angka ganjil atau genap?');
+    
+    let konfirmasi = true;
+    
+        while (konfirmasi === true) {
+            
+            let angkaSatu = Number(prompt("Masukkan angka :"));
+            
+            if(isNaN(angkaSatu)) {
+                alert(`Anda tidak memasukkan angka, mohon ulangi kembali`);
+            } else {
+                if (Number.isInteger(angkaSatu / 2)) {
+                    alert (`Angka yang kamu masukkan GENAP!`)
+                } else {
+                    alert (`Angka yang kamu masukkan GANJIL!`)
+                }
+            }
+        
+            konfirmasi = confirm("Coba lagi?")
+        }
+    
+    alert(`Terima kasih sudah bermain!`)
+    
+
+    // alert('Apakah angka ganjil atau genap?');
+    
+    // let konfirmasi = true;
+    
+    //     while (konfirmasi === true) {
+            
+    //         let angkaSatu = Number(prompt("Masukkan angka :"));
+            
+    //         if(isNaN(angkaSatu)) {
+    //             alert(`Anda tidak memasukkan angka, mohon ulangi kembali`);
+    //         } else {
+    //             if (Math.floor(angkaSatu / 2) * 2 === angkaSatu) {
+    //                 alert (`Angka yang kamu masukkan GENAP!`)
+    //             } else {
+    //                 alert (`Angka yang kamu masukkan GANJIL!`)
+    //             }
+    //         }
+        
+    //         konfirmasi = confirm("Coba lagi?")
+    //     }
+    
+    // alert(`Terima kasih sudah bermain!`)
+
+    
+    </script>

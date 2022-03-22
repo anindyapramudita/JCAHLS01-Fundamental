@@ -1,0 +1,45 @@
+<script>
+    alert('Menghitung jumlah huruf vokal');
+
+    let inputAwal = prompt("Masukkan kalimat :");
+    input = inputAwal.toLowerCase()
+    let vokal = "";
+
+    for (let i = 0; i < input.length; i++) {
+        if (input[i] == "a" || input[i] == "i" || input[i] == "u" || input[i] == "e" || input[i] == "o") {
+            if (!vokal.includes(input.charAt(i))) {
+                vokal += input[i];
+            }
+            // kalimat += input[i];
+        }
+    }
+    
+    alert(`Kalimat : ${inputAwal}
+    Huruf Vokal : ${vokal}
+    Jenis Huruf Vokal : ${vokal.length}`);
+
+//     kalimatPisah = kalimat.split("");
+    
+//     function removeDuplicates(arr) {
+//         return arr.filter((item, index) => arr.indexOf(item) === index);
+//     }
+
+// alert(`Kalimat : ${inputAwal}
+// Huruf Vokal : ${removeDuplicates(kalimatPisah)}
+// Jenis Huruf Vokal : ${removeDuplicates(kalimatPisah).length}`);
+
+
+
+
+// function cariVokal (variable, input) {
+//         for (let i = 0; i < variable.length; i++) {
+//             for (let j = 0; j < input.length; j++) {
+//                 if(variable[i] !== input[j]) {
+//                     return hurufVokal += variable[i];
+//                 }
+//             }
+//         }
+
+//     }
+
+</script>
