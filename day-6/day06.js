@@ -90,7 +90,7 @@ let dataIdx = dataProduct.findIndex((value, index) => {
 })
 
 
-// console.table(searchData);
+console.log(searchData);
 // console.table(dataIdx);
 
 dataProduct[dataIdx].name = "Topi";
@@ -120,6 +120,6 @@ let dbB = {
     gaji: 7500000,
 }
 
-let dataDB = {...dbA, ...dbB, alamat: "Sudirman Thamrin", status: "Aktif"};
+let dataDB = { ...dbA, ...dbB, alamat: "Sudirman Thamrin", status: "Aktif" };
 
-console.log(dataDB);
+// console.log(dataDB);
