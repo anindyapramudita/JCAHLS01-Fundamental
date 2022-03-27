@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1 style="text-align: center;">Quiz Purwadhika</h1>
+    </header>
+    <main>
+        <fieldset style="width: 500px; margin: auto;">
+            <h3>1. Siapakah Presiden Ke-3 Republik Indonesia?</h3>
+            <form id="questionAnswer">
+                <div>
+                    <input type="radio" name="one" value="benar">Proj.B.J.Habibie</input>
+                    <input type="radio" name="one" value="salah">Abdurrahman Wahid</input>
+                    <input type="radio" name="one" value="salah">Ir. Soekarno</input>
+                    <input type="radio" name="one" value="salah">Joko Widodo</input>
+                </div>
+                <div>
+                    <h3>2. Berikut ini adalah nama bahasa pemrograman, kecuali?</h3>
+                    <input type="radio" name="two" value="salah">Python</input>
+                    <input type="radio" name="two" value="benar">Inggris</input>
+                    <input type="radio" name="two" value="salah">C++</input>
+                    <input type="radio" name="two" value="salah">Assembly</input>
+                </div>
+                <div>
+                    <h3>3. Mana yang tidak termasuk keyword variable javascript?</h3>
+                    <input type="radio" name="three" value="salah">const</input>
+                    <input type="radio" name="three" value="salah">var</input>
+                    <input type="radio" name="three" value="salah">let</input>
+                    <input type="radio" name="three" value="benar">function</input>
+                </div>
+                <div>
+                    <h3>4. 2+2=...?</h3>
+                    <input type="radio" name="four" value="salah">6</input>
+                    <input type="radio" name="four" value="salah">8</input>
+                    <input type="radio" name="four" value="salah">2</input>
+                    <input type="radio" name="four" value="benar">4</input>
+                </div>
+            </form>
+        </fieldset>
+        <center>
+            <h2 id="answer"></h2>
+            <button type="button" onclick="handleScore()">Correct</button>
+            <button type="button" onclick="handleReset()">Reset</button>
+        </center>
+    </main>
+</body>
+<script>
+
+    function handleScore() {
+        let allAnswer = document.getElementById("questionAnswer");
+        let array = [
+            allAnswer.elements["one"].value,
+            allAnswer.elements["two"].value,
+            allAnswer.elements["three"].value,
+            allAnswer.elements["four"].value
+        ]
+
+        let score = 0;
+        if (allAnswer.elements["one"].value == "" || allAnswer.elements["two"].value == "" || allAnswer.elements["three"].value == "" || allAnswer.elements["four"].value == "") {
+            alert(`Isi semua jawaban soal!`)
+        } else {
+            for (let i = 0; i < array.length; i++) {
+                if (array[i] == "benar") {
+                    score += 25;
+                }
+            }
+
+            document.getElementById("answer").innerHTML = `Nilai kamu ${score}`
+        }
+    }
+
+    function handleReset() {
+        document.getElementById("questionAnswer").reset();
+
+        document.getElementById("answer").innerHTML = "";
+    }
+
+</script>
+
+</html>

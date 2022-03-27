@@ -183,11 +183,11 @@ function printCart() {
 printCart();
 
 function handleBuy(sku) {
-    let index = dbCart.findIndex((value) => value.sku == sku)
+    // let index = dbCart.findIndex((value) => value.sku == sku)
     let indexCart = dbCart.findIndex((value) => value.sku == sku);
     let indexProduct = dbProduct.findIndex((value) => value.sku == sku);
 
-    if (index >= 0) {
+    if (indexCart >= 0) {
         if (dbCart[indexCart].qty < dbProduct[indexProduct].stock) {
             dbCart[indexCart].qty += 1;
         } else {

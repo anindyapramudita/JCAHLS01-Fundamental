@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+</head>
+
+<body>
+    <center>
+        <h1>Rock Paper Scissors!</h1>
+        <img src="/Rock Paper Scissors Game/batu.png" width="100px">
+        <img src="/Rock Paper Scissors Game/kertas.png" width="100px">
+        <img src="/Rock Paper Scissors Game/gunting.png" width="100px">
+        <br>
+        <form id="pilihan">
+            <button type="button" onclick="handlePlay('1')" value=1>Batu</button>
+            <button type="button" onclick="handlePlay('2')" value=2>Kertas</button>
+            <button type="button" onclick="handlePlay('3')" value=3>gunting</button>
+        </form>
+        <div id="gameResult">
+            <h3>Player</h3>
+            <h3 id="player-option"></h3>
+            <img src="/Rock Paper Scissors Game/versus.png" width="100px"><br>
+            <h3>PC</h3>
+            <h3 id="computer-option"></h3>
+        </div>
+        <div id="gameScore">
+        </div>
+
+    </center>
+</body>
+<script>
+    let menang = 0;
+    let kalah = 0;
+    let seri = 0;
+    let score = 0;
+
+    let gambar = {
+        batu: `<img src="/Rock Paper Scissors Game/batu.png" width="100px">`,
+        kertas: `<img src="/Rock Paper Scissors Game/kertas.png" width="100px">`,
+        gunting: `<img src="/Rock Paper Scissors Game/gunting.png" width="100px">`,
+    }
+
+
+    function handlePlay(option) {
+        let computerOption = Math.ceil(Math.random() * 3);
+        let humanOption = parseInt(option)
+        let hasil = "";
+
+        const gambar = {
+            gunting: `<img src="/Rock Paper Scissors Game/gunting.png" width="100px"><br>`,
+            batu: `<img src="/Rock Paper Scissors Game/batu.png" width="100px"><br>`,
+            kertas: `<img src="/Rock Paper Scissors Game/kertas.png" width="100px"><br>`
+        }
+
+        if (humanOption == 1) {
+            if (computerOption == 2) {
+                kalah++;
+                hasil = "kalah";
+                document.getElementById("player-option").innerHTML = gambar.batu;
+                document.getElementById("computer-option").innerHTML = gambar.kertas;
+            } else if (computerOption == 3) {
+                menang++;
+                score += 25;
+                hasil = "menang";
+                document.getElementById("player-option").innerHTML = gambar.batu;
+                document.getElementById("computer-option").innerHTML = gambar.gunting;
+            } else if (computerOption == 1) {
+                seri++
+                hasil = "seri";
+                document.getElementById("player-option").innerHTML = gambar.batu;
+                document.getElementById("computer-option").innerHTML = gambar.batu;
+            }
+        } else if (humanOption == 2) {
+            if (computerOption == 3) {
+                kalah++;
+                hasil = "kalah";
+                document.getElementById("player-option").innerHTML = gambar.kertas;
+                document.getElementById("computer-option").innerHTML = gambar.gunting;
+            } else if (computerOption == 1) {
+                menang++;
+                hasil = "menang";
+                score += 25;
+                document.getElementById("player-option").innerHTML = gambar.kertas;
+                document.getElementById("computer-option").innerHTML = gambar.batu;
+            } else if (computerOption == 2) {
+                seri++
+                hasil = "seri";
+                document.getElementById("player-option").innerHTML = gambar.kertas;
+                document.getElementById("computer-option").innerHTML = gambar.kertas;
+            }
+        } else if (humanOption == 3) {
+            if (computerOption == 1) {
+                kalah++;
+                hasil = "kalah";
+                document.getElementById("player-option").innerHTML = gambar.gunting;
+                document.getElementById("computer-option").innerHTML = gambar.batu;
+            } else if (computerOption == 2) {
+                menang++;
+                hasil = "menang";
+                score += 25;
+                document.getElementById("player-option").innerHTML = gambar.gunting;
+                document.getElementById("computer-option").innerHTML = gambar.kertas;
+            } else if (computerOption == 3) {
+                seri++;
+                hasil = "seri";
+                document.getElementById("player-option").innerHTML = gambar.gunting;
+                document.getElementById("computer-option").innerHTML = gambar.gunting;
+            }
+        }
+
+        document.getElementById("gameScore").innerHTML = `
+        <h3>Kamu ${hasil}</h3>
+        <h3>Table Score Player: </h3>
+        <h4>Menang: ${menang} Kalah: ${kalah} Seri: ${seri} Score: ${score}`;
+
+    }
+
+</script>
+
+</html>

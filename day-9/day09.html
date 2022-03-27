@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Form</title>
     <style>
-        table, th, td{
+        table,
+        th,
+        td {
             border: 1px solid black;
             border-collapse: collapse;
             padding: 1vw
@@ -62,7 +64,7 @@
 <script>
     let dbStudent = [];
 
-    class Student{
+    class Student {
         constructor(_name, _age, _email, _gender, _program) {
             this.name = _name;
             this.age = _age;
@@ -79,7 +81,7 @@
         let email = form.elements[2].value;
         let gender = form.elements["gender"].value;
         let classProgram = form.elements["program"].value;
-        
+
         dbStudent.push(new Student(fullname, age, email, gender, classProgram))
         form.elements[0].value = null;
         form.elements[1].value = null;
@@ -108,7 +110,7 @@
 
     const deleteData = (index) => {
         dbStudent.splice(index, 1)
-        
+
         printData();
     }
 

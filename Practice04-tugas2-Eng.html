@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Rapid Test</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 1vw;
+        }
+
+        th {
+            min-width: 8vw;
+        }
+    </style>
+</head>
+
+<body>
+    <fieldset>
+        <legend>Citizen</legend>
+        <form id="citizen-data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue</th>
+                        <th>Name</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="citizen-list">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Rapid Test</legend>
+        <form id="rapid-test-data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue</th>
+                        <th>Name</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="rapid-test-list">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Positive Patients</legend>
+        <form id="positive-patients-data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue</th>
+                        <th>Name</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="positive-patients-list">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Negative Patients</legend>
+        <form id="negative-patients-data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue</th>
+                        <th>Name</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="negative-patients-list">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+</body>
+
+<script>
+    class Citizen {
+        constructor(_queue, _name, _departure, _arrival) {
+            this.queue = _queue;
+            this.name = _name;
+            this.departure = _departure;
+            this.arrival = _arrival;
+        }
+    }
+
+    let dbCitizen = [
+        new Citizen("A27BN", "Bayu", "Tasikmalaya", "Bogor"),
+        new Citizen("IOA90", "Yudi", "Sukabumi", "Cidodol")
+    ];
+
+    let dbRapid = [];
+
+    let dbPositive = [];
+
+    let dbNegative = [];
+
+    function printData() {
+        let listInput = `<tr>
+                <td></td>
+                <td><input type="text" id="newName" placeholder="name"></td>
+                <td><input type="text" id="newDeparture" placeholder="departure"></td>
+                <td><input type="text" id="newArrival" placeholder="arrival"></td>
+                <td><button type="button" onclick="handleQueue()">Queue</button></td>
+                </tr>
+        `
+        document.getElementById("citizen-list").innerHTML = dbCitizen.map((value, index) => {
+            return `<tr>
+                <td>${value.queue}</td>
+                <td>${value.name}</td>
+                <td>${value.departure}</td>
+                <td>${value.arrival}</td>
+                <td><button type="button" onclick="handleTest('${value.queue}')">Rapid Test</button></td>
+            `
+        }).join("") + listInput
+
+        document.getElementById("rapid-test-list").innerHTML = dbRapid.map((value, index) => {
+            return `<tr>
+                <td>${value.queue}</td>
+                <td>${value.name}</td>
+                <td>${value.departure}</td>
+                <td>${value.arrival}</td>
+                <td><select id="test-result" onchange="handlePatient('${value.queue}')">
+                    <option value="null" selected>Status</option>
+                    <option value="positive">Positive</option>
+                    <option value="negative">Negative</option>
+                    </select></td>`
+        }).join("");
+
+        document.getElementById("positive-patients-list").innerHTML = dbPositive.map((value, index) => {
+            return `<tr>
+                <td>${value.queue}</td>
+                <td>${value.name}</td>
+                <td>${value.departure}</td>
+                <td>${value.arrival}</td>
+                <td><select id="action-test-positive" onchange="handleResultPositive('${value.queue}')">
+                    <option value="null" selected>Status</option>
+                    <option value="cured">Cured</option>
+                    <option value="dead">Dead</option>
+                    </select></td>`
+        }).join("");
+
+        document.getElementById("negative-patients-list").innerHTML = dbNegative.map((value, index) => {
+            return `<tr>
+                <td>${value.queue}</td>
+                <td>${value.name}</td>
+                <td>${value.departure}</td>
+                <td>${value.arrival}</td>
+                <td><button type="button" onclick="handleHome('${value.queue}')">to Citizen</button></td>`
+        }).join("");
+
+    }
+
+
+    function handleQueue() {
+        let name = document.getElementById("newName").value
+        let departure = document.getElementById("newDeparture").value
+        let arrival = document.getElementById("newArrival").value
+        let queue = "";
+
+        let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        for (let i = 0; i < 5; i++) {
+            queue += characters.charAt(Math.floor(Math.random() * characters.length))
+        }
+
+        dbCitizen.push(new Citizen(queue, name, departure, arrival));
+        printData();
+
+    }
+
+    function handleTest(queue) {
+
+        let index = dbCitizen.findIndex((value) => value.queue === queue)
+        dbRapid.push(dbCitizen[index]);
+        dbCitizen.splice(index, 1);
+
+        printData();
+    }
+
+    function handlePatient(queue) {
+        let index = dbRapid.findIndex((value) => value.queue == queue);
+        let result = document.getElementById("test-result").value
+
+
+        if (result == "positive") {
+            dbPositive.push(dbRapid[index])
+            dbRapid.splice(index, 1)
+        } else if (result == "negative") {
+            dbNegative.push(dbRapid[index])
+            dbRapid.splice(index, 1)
+        }
+
+        printData();
+    }
+
+    function handleResultPositive(queue) {
+        let index = dbPositive.findIndex((value) => value.queue == queue);
+        let result = document.getElementById("action-test-positive").value;
+        if (result == "cured") {
+            dbCitizen.push(dbPositive[index]);
+            dbPositive.splice(index, 1);
+        } else if (result == "dead") {
+            dbPositive.splice(index, 1);
+        }
+
+        printData();
+    }
+
+    function handleHome(queue) {
+        let index = dbNegative.findIndex((value) => value.queue == queue);
+        dbCitizen.push(dbNegative[index]);
+        dbNegative.splice(index, 1);
+
+        printData();
+    }
+
+    printData();
+
+</script>
+
+</html>

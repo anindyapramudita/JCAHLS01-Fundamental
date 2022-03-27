@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Rapid Test</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 1vw;
+        }
+
+        th {
+            min-width: 8vw;
+        }
+    </style>
+</head>
+
+<body>
+    <fieldset>
+        <legend>Warga</legend>
+        <form id="data-warga">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Antrian</th>
+                        <th>Nama</th>
+                        <th>Asal</th>
+                        <th>Tujuan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="list-warga">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Rapid Test</legend>
+        <form id="data-rapid-test">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Antrian</th>
+                        <th>Nama</th>
+                        <th>Asal</th>
+                        <th>Tujuan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="list-rapid-test">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Pasien Positif</legend>
+        <form id="data-pasien-positif">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Antrian</th>
+                        <th>Nama</th>
+                        <th>Asal</th>
+                        <th>Tujuan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="list-pasien-positif">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Pasien Negatif</legend>
+        <form id="data-pasien-negatif">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Antrian</th>
+                        <th>Nama</th>
+                        <th>Asal</th>
+                        <th>Tujuan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="list-pasien-negatif">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+</body>
+<script>
+    class Warga {
+        constructor(_antrian, _nama, _asal, _tujuan) {
+            this.antrian = _antrian;
+            this.nama = _nama;
+            this.asal = _asal;
+            this.tujuan = _tujuan;
+        }
+    }
+
+    let dbWarga = [
+        new Warga("A27BN", "Bayu", "Tasikmalaya", "Bogor"),
+        new Warga("IOA90", "Yudi", "Sukabumi", "Cidodol")
+    ];
+    let dbRapid = [];
+    let dbPositif = [];
+    let dbNegatif = [];
+
+    function printData() {
+        let listInput = `<tr>
+                <td></td>
+                <td><input type="text" id="namaBaru" placeholder="nama"></td>
+                <td><input type="text" id="asalBaru" placeholder="asal"></td>
+                <td><input type="text" id="tujuanBaru" placeholder="tujuan"></td>
+                <td><button type="button" onclick="handleAntri()">Antri</button></td>
+                </form>
+                </tr>
+        `
+        document.getElementById("list-warga").innerHTML = dbWarga.map((value, index) => {
+            return `<tr>
+                <td>${value.antrian}</td>
+                <td>${value.nama}</td>
+                <td>${value.asal}</td>
+                <td>${value.tujuan}</td>
+                <td><button type="button" onclick="handleTest('${value.antrian}')">Rapid Test</button></td>
+            `
+        }).join("") + listInput
+
+        document.getElementById("list-rapid-test").innerHTML = dbRapid.map((value, index) => {
+            return `<tr>
+                <td>${value.antrian}</td>
+                <td>${value.nama}</td>
+                <td>${value.asal}</td>
+                <td>${value.tujuan}</td>
+                <td><select id="hasil-test" onchange="handlePasien('${value.antrian}')">
+                    <option value="null" selected>Status</option>
+                    <option value="positif">Positif</option>
+                    <option value="negatif">Negatif</option>
+                    </select></td>`
+        }).join("");
+
+        document.getElementById("list-pasien-positif").innerHTML = dbPositif.map((value, index) => {
+            return `<tr>
+                <td>${value.antrian}</td>
+                <td>${value.nama}</td>
+                <td>${value.asal}</td>
+                <td>${value.tujuan}</td>
+                <td><select id="action-test-positif" onchange="handleResultPositif('${value.antrian}')">
+                    <option value="null" selected>Status</option>
+                    <option value="sembuh">Sembuh</option>
+                    <option value="meninggal">Meninggal</option>
+                    </select></td>`
+        }).join("");
+
+        document.getElementById("list-pasien-negatif").innerHTML = dbNegatif.map((value, index) => {
+            return `<tr>
+                <td>${value.antrian}</td>
+                <td>${value.nama}</td>
+                <td>${value.asal}</td>
+                <td>${value.tujuan}</td>
+                <td><button type="button" onclick="handleHome('${value.antrian}')">to Warga</button></td>`
+        }).join("");
+
+    }
+
+    function handleAntri() {
+        let nama = document.getElementById("namaBaru").value
+        let asal = document.getElementById("asalBaru").value
+        let tujuan = document.getElementById("tujuanBaru").value
+        let antrian = "";
+
+        let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        for (let i = 0; i < 5; i++) {
+            antrian += characters.charAt(Math.floor(Math.random() * characters.length))
+        }
+
+        dbWarga.push(new Warga(antrian, nama, asal, tujuan));
+        printData();
+
+    }
+
+    function handleTest(antrian) {
+
+        let index = dbWarga.findIndex((value) => value.antrian === antrian)
+        dbRapid.push(dbWarga[index]);
+        dbWarga.splice(index, 1);
+
+        printData();
+    }
+
+    function handlePasien(antrian) {
+        let index = dbRapid.findIndex((value) => value.antrian == antrian);
+        let hasil = document.getElementById("hasil-test").value
+
+
+        if (hasil == "positif") {
+            dbPositif.push(dbRapid[index])
+            dbRapid.splice(index, 1)
+        } else if (hasil == "negatif") {
+            dbNegatif.push(dbRapid[index])
+            dbRapid.splice(index, 1)
+        }
+
+        printData();
+    }
+
+    function handleResultPositif(antrian) {
+        let index = dbPositif.findIndex((value) => value.antrian == antrian);
+        let hasil = document.getElementById("action-test-positif").value;
+        if (hasil == "sembuh") {
+            dbWarga.push(dbPositif[index]);
+            dbPositif.splice(index, 1);
+        } else if (hasil == "meninggal") {
+            dbPositif.splice(index, 1);
+        }
+
+        printData();
+    }
+
+    function handleHome(antrian) {
+        let index = dbNegatif.findIndex((value) => value.antrian == antrian);
+        dbWarga.push(dbNegatif[index]);
+        dbNegatif.splice(index, 1);
+
+        printData();
+    }
+
+    printData();
+
+</script>
+
+</html>
