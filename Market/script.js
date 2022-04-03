@@ -17,6 +17,16 @@ class Cart extends Product {
     }
 }
 
+class PurchasedList {
+    constructor(_username, _date, _totalPayment, _change, _detail) {
+        this.username = _username;
+        this.date = _date;
+        this.totalPayment = _totalPayment;
+        this.change = _change;
+        this._detail = _detail;
+    }
+}
+
 let dbProduct = [
     new Product("SKU-1-126374", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Oreo-Two-Cookies.png/1200px-Oreo-Two-Cookies.png", "Oreo", "Food", 25, 7500),
     new Product("SKU-2-198374", "https://images.tokopedia.net/img/cache/500-square/hDjmkQ/2021/12/20/917461cb-13f8-46b1-bb80-34f35688a10f.jpg", "Pocari", "Drink", 50, 10000)
@@ -25,6 +35,8 @@ let dbProduct = [
 let dbCart = [
     new Cart("SKU-1-126374", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Oreo-Two-Cookies.png/1200px-Oreo-Two-Cookies.png", "Oreo", 7500, 3)
 ];
+
+let dbPurchaseList = [];
 
 let selectedIndex = null;
 let filter = [];
@@ -164,8 +176,12 @@ function handleReset() {
 
 /////////////////////////////////////////// Manage Transaction  ///////////////////////////////////////////
 
+let total = 0;
+
 function printCart() {
+    total = 0;
     let htmlElement = dbCart.map((value, index) => {
+        total += value.subTotal;
         return `<tr>
         <td>${index + 1}</td>
         <td>${value.sku}</td>
@@ -178,6 +194,9 @@ function printCart() {
         </tr>`
     })
     document.getElementById("cart-list").innerHTML = htmlElement.join("");
+    document.getElementById("totalPrice").innerHTML = `Rp. ${total.toLocaleString()}`;
+
+    // totalPayment();
 }
 
 printCart();
@@ -188,26 +207,120 @@ function handleBuy(sku) {
     let indexProduct = dbProduct.findIndex((value) => value.sku == sku);
 
     if (indexCart >= 0) {
-        if (dbCart[indexCart].qty < dbProduct[indexProduct].stock) {
+        if (dbProduct[indexProduct].stock > 0) {
             dbCart[indexCart].qty += 1;
+            dbProduct[indexProduct].stock -= 1;
         } else {
             alert(`Jumlah yang anda masukkan melebihi stock`)
         }
+        dbCart[indexCart].subTotal = dbCart[indexCart].price * dbCart[indexCart].qty;
     } else {
         dbCart.push(new Cart(dbProduct[indexProduct].sku, dbProduct[indexProduct].img, dbProduct[indexProduct].name, dbProduct[indexProduct].price, 1))
+        dbProduct[indexProduct].stock -= 1;
     }
 
+    printProduct();
     printCart();
 }
 
 function handleDeleteCart(sku) {
     let indexCart = dbCart.findIndex((value) => value.sku == sku);
+    let indexProduct = dbProduct.findIndex((value) => value.sku == sku);
 
     if (dbCart[indexCart].qty > 1) {
         dbCart[indexCart].qty -= 1;
+        dbCart[indexCart].subTotal = dbCart[indexCart].price * dbCart[indexCart].qty;
     } else {
         dbCart.splice(indexCart, 1)
     }
+    dbProduct[indexProduct].stock += 1;
+
+    printCart();
+    printProduct();
+
+}
+
+// let totalPrice = 0;
+
+function handleCheckout() {
+    for (let i = 0; i < dbCart.length; i++) {
+        totalPrice += dbCart[i].subTotal
+    }
+
+    document.getElementById("payment-details").innerHTML = `
+    <p>Total Price: IDR ${totalPrice.toLocaleString()}</p>
+    <div id="change-details">
+    <p>Total Money:</p>
+    <input id="totalMoney" type="number"></input>
+    </div>
+    <br>
+    <button type="button" onclick="handlePay()">Pay</button>
+    `
+}
+
+
+// function totalPayment() {
+//     // for (let i = 0; i < dbCart.length; i++) {
+//         //     total += dbCart[i].subTotal
+//         // }
+
+//     let total = 0;
+//     dbCart.forEach(val => total += val.subTotal);
+
+//     document.getElementById("totalPrice").innerHTML = `Rp. ${total.toLocaleString()}`
+// }
+
+const date = new Date()
+const datePurchase = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+let turnover = 0;
+
+function printTransaction() {
+    document.getElementById("transactionDetails").innerHTML = dbPurchaseList.map((value, index) => {
+        return `
+        <tr>
+        <td>${value.username}</td>
+        <td>${datePurchase}</td>
+        <td>Rp. ${(value.totalPayment - value.change).toLocaleString()}</td>
+        </tr>
+        `
+    }).join("")
+
+    document.getElementById("turnover").innerHTML = `<p>Turnover: Rp. ${turnover.toLocaleString()}</p>`
+}
+
+function handleCancel() {
+    for (let i = 0; i < dbCart.length; i++) {
+        let index = dbProduct.findIndex(value => value.sku == dbCart[i].sku)
+        dbProduct[index].stock += dbCart[i].qty;
+    }
+
+    dbCart = [];
+    printProduct();
+    printCart();
+}
+
+function handlePay() {
+
+    let totalMoney = parseInt(document.getElementById("totalMoney").value)
+    let count = totalMoney - total;
+
+    if (count < 0) {
+        alert(`your money is insufficient`)
+    } else if (count >= 0) {
+        turnover += total;
+
+        dbPurchaseList.push(new PurchasedList(document.getElementById("username").value, datePurchase, totalMoney, count, dbCart))
+
+        printTransaction();
+
+        document.getElementById("totalMoney").value = null;
+        document.getElementById("username").value = null;
+        total = 0;
+        dbCart = [];
+    }
+
+
+
 
     printCart();
 }

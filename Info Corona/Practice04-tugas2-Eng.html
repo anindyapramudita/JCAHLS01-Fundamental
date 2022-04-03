@@ -101,6 +101,8 @@
 </body>
 
 <script>
+
+    // Citizen data
     class Citizen {
         constructor(_queue, _name, _departure, _arrival) {
             this.queue = _queue;
@@ -109,18 +111,15 @@
             this.arrival = _arrival;
         }
     }
-
     let dbCitizen = [
         new Citizen("A27BN", "Bayu", "Tasikmalaya", "Bogor"),
         new Citizen("IOA90", "Yudi", "Sukabumi", "Cidodol")
     ];
-
     let dbRapid = [];
-
     let dbPositive = [];
-
     let dbNegative = [];
 
+    // to print all data
     function printData() {
         let listInput = `<tr>
                 <td></td>
@@ -146,7 +145,7 @@
                 <td>${value.name}</td>
                 <td>${value.departure}</td>
                 <td>${value.arrival}</td>
-                <td><select id="test-result" onchange="handlePatient('${value.queue}')">
+                <td><select id="result-${value.queue}" onchange="handlePatient('${value.queue}')">
                     <option value="null" selected>Status</option>
                     <option value="positive">Positive</option>
                     <option value="negative">Negative</option>
@@ -159,7 +158,7 @@
                 <td>${value.name}</td>
                 <td>${value.departure}</td>
                 <td>${value.arrival}</td>
-                <td><select id="action-test-positive" onchange="handleResultPositive('${value.queue}')">
+                <td><select id="action-${value.queue}" onchange="handleResultPositive('${value.queue}')">
                     <option value="null" selected>Status</option>
                     <option value="cured">Cured</option>
                     <option value="dead">Dead</option>
@@ -177,7 +176,7 @@
 
     }
 
-
+    // to add new citizen to citizen list
     function handleQueue() {
         let name = document.getElementById("newName").value
         let departure = document.getElementById("newDeparture").value
@@ -194,6 +193,7 @@
 
     }
 
+    // to move citizen to the rapid test list
     function handleTest(queue) {
 
         let index = dbCitizen.findIndex((value) => value.queue === queue)
@@ -203,25 +203,27 @@
         printData();
     }
 
+    // to move citizen from rapid test list to the positive list or negative list
     function handlePatient(queue) {
         let index = dbRapid.findIndex((value) => value.queue == queue);
-        let result = document.getElementById("test-result").value
+        let result = document.getElementById(`result-${queue}`).value
 
 
         if (result == "positive") {
-            dbPositive.push(dbRapid[index])
-            dbRapid.splice(index, 1)
+            dbPositive.push(dbRapid[index]);
         } else if (result == "negative") {
-            dbNegative.push(dbRapid[index])
-            dbRapid.splice(index, 1)
+            dbNegative.push(dbRapid[index]);
         }
+
+        dbRapid.splice(index, 1)
 
         printData();
     }
 
+    // to move citizen from positive list back to citizen list or delete them
     function handleResultPositive(queue) {
         let index = dbPositive.findIndex((value) => value.queue == queue);
-        let result = document.getElementById("action-test-positive").value;
+        let result = document.getElementById(`action-${queue}`).value;
         if (result == "cured") {
             dbCitizen.push(dbPositive[index]);
             dbPositive.splice(index, 1);
@@ -232,6 +234,7 @@
         printData();
     }
 
+    // to move citizen from negative list back to citizen list
     function handleHome(queue) {
         let index = dbNegative.findIndex((value) => value.queue == queue);
         dbCitizen.push(dbNegative[index]);
@@ -240,6 +243,7 @@
         printData();
     }
 
+    // initial print for default data 
     printData();
 
 </script>

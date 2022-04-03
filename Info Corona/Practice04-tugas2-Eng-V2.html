@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Rapid Test</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 1vw;
+        }
+
+        th {
+            min-width: 8vw;
+        }
+    </style>
+</head>
+
+<body>
+    <fieldset>
+        <legend>Citizen</legend>
+        <form id="citizen-data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue</th>
+                        <th>Name</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="citizen-list">
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><input type="text" id="newName" placeholder="name"></td>
+                        <td><input type="text" id="newDeparture" placeholder="departure"></td>
+                        <td><input type="text" id="newArrival" placeholder="arrival"></td>
+                        <td><button type="button" onclick="handleQueue()">Queue</button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Rapid Test</legend>
+        <form id="rapid-test-data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue</th>
+                        <th>Name</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="rapid-test-list">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Positive Patients</legend>
+        <form id="positive-patients-data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue</th>
+                        <th>Name</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="positive-patients-list">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+    <fieldset>
+        <legend>Negative Patients</legend>
+        <form id="negative-patients-data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue</th>
+                        <th>Name</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="negative-patients-list">
+
+                </tbody>
+            </table>
+        </form>
+    </fieldset>
+</body>
+
+<script>
+
+    // Citizen data
+    class Citizen {
+        constructor(_queue, _name, _departure, _arrival) {
+            this.queue = _queue;
+            this.name = _name;
+            this.departure = _departure;
+            this.arrival = _arrival;
+            this.status = "Listed"
+        }
+
+        makeAction = () => {
+            if (this.status == "Listed") {
+                return `<button type="button" onclick="handleTest('${this.queue}', 'Rapid')">Rapid Test</button>`
+            } else if (this.status == "Rapid") {
+                return `<select id="result-${this.queue}" onchange="handlePatient('${this.queue}')">
+                    <option value="null" selected>Status</option>
+                    <option value="positive">Positive</option>
+                    <option value="negative">Negative</option>
+                    </select>`
+            } else if (this.status == "Positif") {
+                return `<select id="report-${this.queue}" onchange="handlePatient('${this.queue}')">
+                    <option value="null" selected>Status</option>
+                    <option value="Listed">Cured</option>
+                    <option value="Dead">Dead</option>
+                    </select>`
+            }
+        }
+    }
+
+    let dbCitizen = [
+        new Citizen("A27BN", "Bayu", "Tasikmalaya", "Bogor"),
+        new Citizen("IOA90", "Yudi", "Sukabumi", "Cidodol")
+    ];
+    let dbRapid = [];
+    let dbPositive = [];
+    let dbNegative = [];
+
+    // to print all data
+    function printData(status, print) {
+
+        let data = dbCitizen.filter(value => value.status == status);
+
+        document.getElementById(print).innerHTML = data.map((value, index) => {
+            return `<tr>
+                <td>${value.queue}</td>
+                <td>${value.name}</td>
+                <td>${value.departure}</td>
+                <td>${value.arrival}</td>
+                <td>${value.makeAction()}</td>
+            `
+        }).join("")
+
+        // document.getElementById("rapid-test-list").innerHTML = dbRapid.map((value, index) => {
+        //     return `<tr>
+        //         <td>${value.queue}</td>
+        //         <td>${value.name}</td>
+        //         <td>${value.departure}</td>
+        //         <td>${value.arrival}</td>
+        //         <td><select id="result-${value.queue}" onchange="handlePatient('${value.queue}')">
+        //             <option value="null" selected>Status</option>
+        //             <option value="positive">Positive</option>
+        //             <option value="negative">Negative</option>
+        //             </select></td>`
+        // }).join("");
+
+        //     document.getElementById("positive-patients-list").innerHTML = dbPositive.map((value, index) => {
+        //         return `<tr>
+        //             <td>${value.queue}</td>
+        //             <td>${value.name}</td>
+        //             <td>${value.departure}</td>
+        //             <td>${value.arrival}</td>
+        //             <td><select id="action-${value.queue}" onchange="handleResultPositive('${value.queue}')">
+        //                 <option value="null" selected>Status</option>
+        //                 <option value="cured">Cured</option>
+        //                 <option value="dead">Dead</option>
+        //                 </select></td>`
+        //     }).join("");
+
+        //     document.getElementById("negative-patients-list").innerHTML = dbNegative.map((value, index) => {
+        //         return `<tr>
+        //             <td>${value.queue}</td>
+        //             <td>${value.name}</td>
+        //             <td>${value.departure}</td>
+        //             <td>${value.arrival}</td>
+        //             <td><button type="button" onclick="handleHome('${value.queue}')">to Citizen</button></td>`
+        //     }).join("");
+
+    }
+
+    // to add new citizen to citizen list
+    function handleQueue() {
+        let name = document.getElementById("newName").value
+        let departure = document.getElementById("newDeparture").value
+        let arrival = document.getElementById("newArrival").value
+        let queue = "";
+
+        let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        for (let i = 0; i < 5; i++) {
+            queue += characters.charAt(Math.floor(Math.random() * characters.length))
+        }
+
+        dbCitizen.push(new Citizen(queue, name, departure, arrival));
+        printData();
+
+    }
+
+    // to move citizen to the rapid test list
+    function handleTest(queue, status) {
+
+        let index = dbCitizen.findIndex((value) => value.queue === queue);
+        let result = document.getElementById(`result-${queue}`);
+        let report = document.getElementById(`report-${queue}`);
+
+        if (status) {
+            dbCitizen[index].status = status;
+        } else {
+            if (result.value == "Positif" || result.value == "Negatif") {
+                dbCitizen[index].status = status;
+            } else if (report.value == "Cured" || report.value == "Dead") {
+                dbCitizen[index].status = report;
+            }
+        }
+
+        printData("Listed", "citizen-list");
+        printData("Rapid", "rapid-test-list");
+        printData("Positive", "positive-patient-list");
+        printData("Negative", "negative-patient-list");
+    }
+
+
+
+    // initial print for default data 
+    printData("Listed", "citizen-list");
+
+</script>
+
+</html>

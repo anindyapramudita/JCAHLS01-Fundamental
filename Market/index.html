@@ -95,6 +95,55 @@
 
                 </tbody>
             </table>
+            <br>
+            <!-- <button type="button" onclick="handleCheckout()">Checkout</button> -->
+        </fieldset>
+        <fieldset>
+            <legend>Payment</legend>
+            <br>
+            <label>Username :</label>
+            <input type="text" id="username"></input>
+            <br><br>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <h4>Total Price</h4>
+                        </td>
+                        <td>
+                            <h4 id="totalPrice">Rp. 0,-</h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Total Money</h4>
+                        </td>
+                        <td>
+                            <input type="number" id="totalMoney"></input>
+                            <button type="button" onclick="handlePay()">Pay</button>
+                            <button type="button" onclick="handleCancel()">Cancel</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <div id="payment-details">
+            </div> -->
+        </fieldset>
+        <fieldset>
+            <legend>Transaction Details</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionDetails">
+
+                </tbody>
+            </table>
+            <h4 id="turnover"></h4>
         </fieldset>
     </div>
 </body>

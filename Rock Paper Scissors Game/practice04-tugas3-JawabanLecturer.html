@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+</head>
+
+<body>
+    <center>
+        <h1>Rock Paper Scissors!</h1>
+        <img src="/Rock Paper Scissors Game/batu.png" width="100px">
+        <img src="/Rock Paper Scissors Game/kertas.png" width="100px">
+        <img src="/Rock Paper Scissors Game/gunting.png" width="100px">
+        <br>
+        <form id="pilihan">
+            <button type="button" onclick="handlePlay(0)" value=1>Batu</button>
+            <button type="button" onclick="handlePlay(1)" value=2>Kertas</button>
+            <button type="button" onclick="handlePlay(2)" value=3>Gunting</button>
+        </form>
+        <div id="gameResult">
+            <h3>Player</h3>
+            <div id="player-option">
+
+            </div>
+            <img src="/Rock Paper Scissors Game/versus.png" width="100px"><br>
+            <h3>PC</h3>
+            <div id="computer-option">
+
+            </div>
+        </div>
+        <h4 id="message">
+        </h4>
+        <div id="gameScore">
+        </div>
+
+    </center>
+</body>
+<script>
+    let score = {
+        win: 0,
+        lose: 0,
+        draw: 0,
+    }
+
+    let gambar = [
+        `<img src="/Rock Paper Scissors Game/batu.png" width="100px" alt="batu">`,
+        `<img src="/Rock Paper Scissors Game/kertas.png" width="100px" alt="kertas">`,
+        `<img src="/Rock Paper Scissors Game/gunting.png" width="100px" alt="gunting">`
+    ]
+
+    let pc = null;
+    let shuffle = setInterval(() => {
+        pc = Math.round(Math.random() * 2);
+        document.getElementById("computer-option").innerHTML = gambar[pc]
+    }, 50);
+
+
+
+    let message = ["Player WIN ✅!", "Player LOSE ❌", "It's a DRAW ⏺"];
+
+    const check = (pcValue, playerWin, playerLose) => {
+        clearInterval(shuffle);
+        if (pcValue == playerWin) {
+            score.win += 1;
+            return message[0];
+        } else if (pcValue == playerLose) {
+            score.lose += 1;
+            return message[1];
+        } else {
+            score.draw += 1;
+            return message[2];
+        }
+    }
+
+
+    const handlePlay = player => {
+
+        let repeat = setInterval(() => {
+            pc = Math.round(Math.random() * 2);
+            document.getElementById("computer-option").innerHTML = gambar[pc]
+        }, 50)
+
+        document.getElementById("player-option").innerHTML = gambar[player];
+
+        setTimeout(() => {
+
+            if (player == 0) {
+                document.getElementById("message").innerHTML = check(pc, 2, 1);
+            } else if (player == 1) {
+                document.getElementById("message").innerHTML = check(pc, 0, 2);
+            } else if (player == 2) {
+                document.getElementById("message").innerHTML = check(pc, 1, 0);
+            }
+
+            // document.getElementById("computer-option").innerHTML = gambar[pc];
+            document.getElementById("gameScore").innerHTML = `Result : </br>WIN: ${score.win} </br> LOSE: ${score.lose} </br> DRAW: ${score.draw} </br> Final Score: ${score.win * 25}`
+            clearInterval(shuffle)
+            clearInterval(repeat)
+
+        }, 2000)
+    }
+
+
+</script>
+
+</html>
